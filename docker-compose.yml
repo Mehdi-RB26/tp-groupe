@@ -1,0 +1,46 @@
+version: '3.8'
+
+services:
+  db:
+    image: mongo:latest
+    container_name: tpgroupedb
+    volumes:
+      - mongo_data:/data/db
+    networks:
+      - tp-network
+    restart: always
+
+  backend:
+    build: ./backend
+    container_name: tpgrouped-backend
+    environment:
+      - MONGO_URI=mongodb+srv://Mehdi:Apex.1686@metflix.tle1o.mongodb.net/
+      - PORT=5000
+    ports:
+      - "5000:5000"
+    depends_on:
+      - db
+    networks:
+      - tp-network
+    restart: always
+
+  frontend:
+    image: node:16
+    container_name: tpgrouped-frontend
+    working_dir: /app
+    volumes:
+      - ./frontend:/app
+    ports:
+      - "3000:3000"
+    depends_on:
+      - backend
+    networks:
+      - tp-network
+    restart: always
+
+networks:
+  tp-network:
+    driver: bridge
+
+volumes:
+  mongo_data:
