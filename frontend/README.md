@@ -1,70 +1,67 @@
-# Getting Started with Create React App
+# TP de Groupe : Déploiement d’une Mini-Plateforme Multi-Services avec Docker Compose
 
-This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
+## Description
 
-## Available Scripts
+This project is a mini-platform consisting of three services:
+1. **Backend**: A Node.js/Express API that provides RESTful endpoints.
+2. **Frontend**: A React application that consumes the API.
+3. **Database**: MongoDB for data persistence.
 
-In the project directory, you can run:
+The goal is to deploy a fully containerized stack using Docker Compose.
 
-### `npm start`
+---
 
-Runs the app in the development mode.\
-Open [http://localhost:3000](http://localhost:3000) to view it in your browser.
+## Architecture
 
-The page will reload when you make changes.\
-You may also see any lint errors in the console.
+### Services
+- **Backend**:
+  - Exposes two routes:
+    - `GET /api/items`: Fetches all items.
+    - `POST /api/items`: Adds a new item.
+  - Connects to MongoDB for data storage.
+- **Frontend**:
+  - Displays the list of items fetched from the backend.
+  - Allows users to add new items via a form.
+- **Database**:
+  - MongoDB is used for storing and persisting data.
 
-### `npm test`
+---
 
-Launches the test runner in the interactive watch mode.\
-See the section about [running tests](https://facebook.github.io/create-react-app/docs/running-tests) for more information.
+## Prerequisites
 
-### `npm run build`
+- Docker and Docker Compose installed on your machine.
+- A `.env` file in the root directory with the following variables:
+  ```properties
+  MONGO_URI=mongodb+srv://<username>:<password>@<cluster>.mongodb.net/<dbname>
+  PORT=5000
+  REACT_APP_API_URL=http://backend:5000
 
-Builds the app for production to the `build` folder.\
-It correctly bundles React in production mode and optimizes the build for the best performance.
+  ---
 
-The build is minified and the filenames include the hashes.\
-Your app is ready to be deployed!
+## Setup and Usage
 
-See the section about [deployment](https://facebook.github.io/create-react-app/docs/deployment) for more information.
+### 1. Clone the Repository
+```bash
+git clone https://github.com/yourusername/tp-groupe.git
+cd tp-groupe
 
-### `npm run eject`
+### 2. Clone the Repository
+ To start all services (backend, frontend, and database), run:
+docker-compose up --build
 
-**Note: this is a one-way operation. Once you `eject`, you can't go back!**
+###3. Access the Application
+Frontend: http://localhost:3000
+Backend: http://localhost:5000/api/items
 
-If you aren't satisfied with the build tool and configuration choices, you can `eject` at any time. This command will remove the single build dependency from your project.
+1What is the difference between build: and image: in Docker Compose?
+-build: specifies how to build an image locally using a Dockerfile.
+-image: uses a pre-built image from a registry like Docker Hub.
 
-Instead, it will copy all the configuration files and the transitive dependencies (webpack, Babel, ESLint, etc) right into your project so you have full control over them. All of the commands except `eject` will still work, but they will point to the copied scripts so you can tweak them. At this point you're on your own.
+2What is the purpose of using a .env file in a Docker project?
+-It centralizes configuration, avoids hardcoding sensitive data, and simplifies updates.
 
-You don't have to ever use `eject`. The curated feature set is suitable for small and middle deployments, and you shouldn't feel obligated to use this feature. However we understand that this tool wouldn't be useful if you couldn't customize it when you are ready for it.
+3How do Docker volumes help with data persistence?
+-Volumes store data outside the container, ensuring it persists even if the container is restarted or removed.
 
-## Learn More
-
-You can learn more in the [Create React App documentation](https://facebook.github.io/create-react-app/docs/getting-started).
-
-To learn React, check out the [React documentation](https://reactjs.org/).
-
-### Code Splitting
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/code-splitting](https://facebook.github.io/create-react-app/docs/code-splitting)
-
-### Analyzing the Bundle Size
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/analyzing-the-bundle-size](https://facebook.github.io/create-react-app/docs/analyzing-the-bundle-size)
-
-### Making a Progressive Web App
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/making-a-progressive-web-app](https://facebook.github.io/create-react-app/docs/making-a-progressive-web-app)
-
-### Advanced Configuration
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/advanced-configuration](https://facebook.github.io/create-react-app/docs/advanced-configuration)
-
-### Deployment
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/deployment](https://facebook.github.io/create-react-app/docs/deployment)
-
-### `npm run build` fails to minify
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/troubleshooting#npm-run-build-fails-to-minify](https://facebook.github.io/create-react-app/docs/troubleshooting#npm-run-build-fails-to-minify)
+4How would you add a fourth service (e.g., a reverse proxy like NGINX)?
+-Add an NGINX service to the docker-compose.yml file, configure it to route traffic to the frontend and backend, and expose it on port 80.
